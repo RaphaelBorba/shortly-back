@@ -1,12 +1,20 @@
 import { connection } from "../Database/db.js"
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from "uuid";
+import { validateSingInModel } from "../Models/createUser.model.js";
 
 
 
 export async function postSingIn(req, res){
 
     const {email, password} = req.body
+
+    const validation = validateSingInModel.validate(req.body, {abortEarly: false})
+
+    if(validateSingInModel.error.message){
+        const errors = validateSingInModel.error.details.map(e => e.message)
+        return res.status(400).send(errors)
+    }
 
     const user = await connection.query('SELECT * FROM users WHERE email = $1', [email])
 
