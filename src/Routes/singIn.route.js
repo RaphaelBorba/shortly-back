@@ -5,6 +5,6 @@ import { postSingIn } from "../Controllers/singIn.controller.js";
 
 const router = Router()
 
-router.post('/sing_in', postSingIn)
+router.post('/singIn', postSingIn)
 
-export default router
+export default router   

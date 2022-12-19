@@ -39,7 +39,7 @@ export async function postSingIn(req, res){
     }
     try {
 
-        res.status(200).send(newToken)
+        res.status(200).send({token: newToken, userId: user.rows[0].id, name: user.rows[0].name})
     } catch (error) {
         console.log(error)
         res.sendStatus(404)
