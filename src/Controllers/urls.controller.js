@@ -36,3 +36,22 @@ export async function postUrlShort(req ,res){
 
     
 }
+
+export async function getUrl(req, res){
+
+    const {id} = req.params
+
+    try {
+        const checkId = await connection.query(`SELECT id, short_url, url FROM urls WHERE id=$1`, [id])
+
+        if(!checkId.rows[0]){
+            return res.sendStatus(404)
+        }
+        
+        res.status(200).send(checkId.rows[0])
+
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500)
+    }
+}
