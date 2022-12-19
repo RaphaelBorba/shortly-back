@@ -15,8 +15,6 @@ export async function validatePostSingUp(req, res, next){
 
     const isCreate = await connection.query(`SELECT * FROM users WHERE email=$1`, [email])
 
-    
-
     if(isCreate.rows[0]){
 
         return res.status(400).send('Email já cadastrado!')
