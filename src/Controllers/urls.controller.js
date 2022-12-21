@@ -63,3 +63,26 @@ export async function getOpenUrl(req, res){
         res.sendStatus(500)
     }
 }
+
+export async function deleteUrl(req, res){
+
+    const urlId = req.params.id
+    const {userId} = res.locals
+
+    const url = await connection.query(`SELECT * FROM urls WHERE id=$1 AND user_id=$2`, [urlId, userId])
+
+    if(!url.rows[0]){
+        return res.sendStatus(401)
+    }
+
+    try {
+        
+        await connection.query(`DELETE FROM urls WHERE id=$1 AND user_id = $2`, [urlId, userId])
+
+        res.sendStatus(204)
+
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500)
+    }
+}
