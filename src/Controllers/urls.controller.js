@@ -1,5 +1,4 @@
 import { connection } from "../Database/db.js"
-import { urlModel } from "../Models/urls.model.js"
 import { nanoid } from "nanoid"
 
 
@@ -8,19 +7,6 @@ export async function postUrlShort(req ,res){
 
     const body = req.body
     const {userId} = res.locals
-
-    const validation = urlModel.validate(body)
-
-    if(validation.error){
-        return res.sendStatus(422)
-    }
-
-    const alreadyCreate = await connection.query(`SELECT * FROM urls WHERE url=$1 AND user_id=$2;`, [body.url,userId])
-
-    if(alreadyCreate.rows[0]){
-        return res.sendStatus(409)
-    }
-
     const shortUrl = nanoid(6)
 
     try {
@@ -49,6 +35,28 @@ export async function getUrl(req, res){
         }
         
         res.status(200).send(checkId.rows[0])
+
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500)
+    }
+}
+
+export async function getOpenUrl(req, res){
+
+    const {shortUrl} = req.params
+
+    const url = await connection.query(`SELECT * FROM urls WHERE short_url = $1`, [shortUrl])
+
+    if(!url.rows[0]){
+        return res.sendStatus(404)
+    }
+
+    try {
+        
+        await connection.query('UPDATE urls SET visit_count = $1 WHERE short_url = $2', [url.rows[0].visit_count+1, shortUrl])
+
+        res.redirect(url.rows[0].url)
 
     } catch (error) {
         console.log(error)
