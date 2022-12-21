@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import singIn from './Routes/singIn.route.js'
 import singUp from './Routes/SingUp.route.js'
 import urls from './Routes/urls.route.js'
+import users from './Routes/user.route.js'
 
 dotenv.config()
 
@@ -15,6 +16,7 @@ app.use(cors())
 app.use(singIn)
 app.use(singUp)
 app.use(urls)
+app.use(users)
 
 const port = process.env.PORT || 4000
 
