@@ -5,6 +5,7 @@ import singIn from './Routes/singIn.route.js'
 import singUp from './Routes/SingUp.route.js'
 import urls from './Routes/urls.route.js'
 import users from './Routes/user.route.js'
+import rank from './Routes/ranking.router.js'
 
 dotenv.config()
 
@@ -17,6 +18,7 @@ app.use(singIn)
 app.use(singUp)
 app.use(urls)
 app.use(users)
+app.use(rank)
 
 const port = process.env.PORT || 4000
 

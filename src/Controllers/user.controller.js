@@ -6,7 +6,6 @@ export async function getUser(req, res){
 
     const userId = res.locals.userId
 
-
     try {
 
         const user = await connection.query(`SELECT users.*, SUM(urls.visit_count) AS visit_count,  JSON_AGG(urls.*) AS shortened_urls
@@ -21,6 +20,4 @@ export async function getUser(req, res){
         console.log(error)
         res.sendStatus(500) 
     }
-
-
 }
